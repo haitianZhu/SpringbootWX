@@ -1,6 +1,6 @@
 package com.haitian.demo.util;
 
-import com.haitian.demo.Model.MessageText;
+import com.haitian.demo.model.MessageText;
 import com.thoughtworks.xstream.XStream;
 
 import java.util.Date;

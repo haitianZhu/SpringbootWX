@@ -1,10 +1,14 @@
 package com.haitian.demo.controller;
 
+import com.haitian.demo.model.netbean.GetTokenRequest;
+import com.haitian.demo.model.netbean.GetTokenResponse;
+import com.haitian.demo.service.ApiNetWX;
 import com.haitian.demo.service.CoreService;
 import com.haitian.demo.util.ImageMessageUtil;
 import com.haitian.demo.util.MessageUtil;
 import com.haitian.demo.util.SignUtil;
 import com.haitian.demo.util.TextMessageUtil;
+import com.haitian.demo.util.URLContract;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +41,7 @@ public class CoreController {
 
     //增加日志
     private static Logger log = LoggerFactory.getLogger(CoreController.class);
+
     //验证是否来自微信服务器的消息
     @RequestMapping(value = "",method = RequestMethod.GET)
     public String checkSignature(@RequestParam(name = "signature" ,required = false) String signature  ,
@@ -70,12 +75,18 @@ public class CoreController {
 
         String message = null;
         // 处理不同类型的消息
+        System.out.println(msgType+"");
         if ("text".equals(msgType)) {
 
             String content = map.get("Content");
 
+            GetTokenResponse getTokenResponse = ApiNetWX.getToken(URLContract.BASE_URL, new
+                    GetTokenRequest(URLContract.TEST_APP_ID, URLContract.TEST_APP_SECRET));
+            content = "token:" + getTokenResponse.getAccess_token() + "expires_in:" +
+                    getTokenResponse.getExpires_in();
+
             TextMessageUtil textMessage = new TextMessageUtil();
-            String responseContent = "你输入的内容是，" + content;
+            String responseContent = "你输入的内容是:" + content;
             message = textMessage.initMessage(fromUserName, toUserName, responseContent);
         } else if ("image".equals(msgType)){
 
