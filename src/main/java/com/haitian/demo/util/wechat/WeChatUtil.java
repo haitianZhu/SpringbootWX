@@ -3,11 +3,14 @@ package com.haitian.demo.util.wechat;
 import com.haitian.demo.controller.CoreController;
 import com.haitian.demo.model.netbean.GetTokenRequest;
 import com.haitian.demo.model.netbean.GetTokenResponse;
+import com.haitian.demo.model.netbean.UploadFileResponse;
 import com.haitian.demo.service.ApiNetWX;
 import com.haitian.demo.util.RedisUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
 
 import redis.clients.jedis.Jedis;
 
@@ -29,10 +32,13 @@ public class WeChatUtil {
 
     public static final String GET_ACCESS_TOKEN = "token";
 
+    public static final String UPLOAD_MEDIA = "media/upload";
+
     /**
      * constant value
      */
     private static final String REDIS_TOKEN_KEY = "access_token";
+
 
     //增加日志
     private static Logger log = LoggerFactory.getLogger(WeChatUtil.class);
@@ -79,6 +85,22 @@ public class WeChatUtil {
         RedisUtil.returnResource(jedis);
 
         return token;
+    }
+
+    /**
+     * 向微信服务器上传文件接口，仅实现了功能，待优化
+     * @param file
+     * @param mediaType
+     */
+    public static void uploadFile(File file, String mediaType) {
+
+        String token = getToken();
+        if (token != null && !token.isEmpty()) {
+            UploadFileResponse uploadFileResponse = ApiNetWX.uploadFile(WeChatUtil.BASE_URL,
+                    file, mediaType, token);
+            log.info(uploadFileResponse.toString());
+        }
+
     }
 
     private static String getAccessToken() {

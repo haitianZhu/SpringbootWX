@@ -1,5 +1,6 @@
 package com.haitian.demo.controller;
 
+import com.haitian.demo.model.message.MessageType;
 import com.haitian.demo.model.netbean.GetTokenRequest;
 import com.haitian.demo.model.netbean.GetTokenResponse;
 import com.haitian.demo.service.ApiNetWX;
@@ -8,6 +9,7 @@ import com.haitian.demo.util.wechat.ImageMessageUtil;
 import com.haitian.demo.util.wechat.MessageUtil;
 import com.haitian.demo.util.wechat.SignUtil;
 import com.haitian.demo.util.wechat.TextMessageUtil;
+import com.haitian.demo.util.wechat.VoiceMessageUtil;
 import com.haitian.demo.util.wechat.WeChatUtil;
 
 import org.slf4j.Logger;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -76,21 +79,32 @@ public class CoreController {
         String message = null;
         // 处理不同类型的消息
         System.out.println(msgType+"");
-        if ("text".equals(msgType)) {
+        if (MessageType.TEXT.equals(msgType)) {
 
             String content = map.get("Content");
 
-            content = "token:" + WeChatUtil.getToken();
+//            content = "token:" + WeChatUtil.getToken();
+
+//            测试媒体文件上传
+//            File imageFile = new File("1.jpg");
+//            WeChatUtil.uploadFile(imageFile, MessageType.IMAGE);
 
             TextMessageUtil textMessage = new TextMessageUtil();
-            String responseContent = "你输入的内容是:" + content;
+            String responseContent = "你输入的内容是:" + WeChatUtil.getToken();
             message = textMessage.initMessage(fromUserName, toUserName, responseContent);
-        } else if ("image".equals(msgType)){
+
+        } else if (MessageType.IMAGE.equals(msgType)){
 
             String mediaId = map.get("MediaId");
 
             ImageMessageUtil imageMessageUtil = new ImageMessageUtil();
             message = imageMessageUtil.initMessage(fromUserName, toUserName, mediaId);
+        } else if (MessageType.VOICE.equals(msgType)) {
+
+            String mediaId = map.get("MediaId");
+
+            VoiceMessageUtil voiceMessageUtil = new VoiceMessageUtil();
+            message = voiceMessageUtil.initMessage(fromUserName, toUserName, mediaId);
         }
 
 

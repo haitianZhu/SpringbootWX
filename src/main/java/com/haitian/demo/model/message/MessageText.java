@@ -41,4 +41,5 @@ public class MessageText extends BaseMessage{
     public void setMsgId(String msgId) {
         MsgId = msgId;
     }
+
 }
