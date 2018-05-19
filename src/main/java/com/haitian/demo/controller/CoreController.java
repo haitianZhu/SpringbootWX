@@ -4,11 +4,11 @@ import com.haitian.demo.model.netbean.GetTokenRequest;
 import com.haitian.demo.model.netbean.GetTokenResponse;
 import com.haitian.demo.service.ApiNetWX;
 import com.haitian.demo.service.CoreService;
-import com.haitian.demo.util.ImageMessageUtil;
-import com.haitian.demo.util.MessageUtil;
-import com.haitian.demo.util.SignUtil;
-import com.haitian.demo.util.TextMessageUtil;
-import com.haitian.demo.util.URLContract;
+import com.haitian.demo.util.wechat.ImageMessageUtil;
+import com.haitian.demo.util.wechat.MessageUtil;
+import com.haitian.demo.util.wechat.SignUtil;
+import com.haitian.demo.util.wechat.TextMessageUtil;
+import com.haitian.demo.util.wechat.WeChatUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,10 +80,7 @@ public class CoreController {
 
             String content = map.get("Content");
 
-            GetTokenResponse getTokenResponse = ApiNetWX.getToken(URLContract.BASE_URL, new
-                    GetTokenRequest(URLContract.TEST_APP_ID, URLContract.TEST_APP_SECRET));
-            content = "token:" + getTokenResponse.getAccess_token() + "expires_in:" +
-                    getTokenResponse.getExpires_in();
+            content = "token:" + WeChatUtil.getToken();
 
             TextMessageUtil textMessage = new TextMessageUtil();
             String responseContent = "你输入的内容是:" + content;

@@ -1,4 +1,4 @@
-package com.haitian.demo.util;
+package com.haitian.demo.util.wechat;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

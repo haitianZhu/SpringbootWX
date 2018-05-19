@@ -1,6 +1,7 @@
-package com.haitian.demo.util;
+package com.haitian.demo.util.wechat;
 
-import com.haitian.demo.model.MessageText;
+import com.haitian.demo.model.message.MessageText;
+import com.haitian.demo.util.wechat.BaseMessageUtil;
 import com.thoughtworks.xstream.XStream;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Date;
  * @Date: 2018/5/17 上午12:15
  * @Description:
  */
-public class TextMessageUtil implements BaseMessageUtil<MessageText>{
+public class TextMessageUtil implements BaseMessageUtil<MessageText> {
 
     /**
      * 将发送消息封装成对应的xml格式

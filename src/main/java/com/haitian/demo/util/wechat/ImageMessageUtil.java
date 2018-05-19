@@ -1,6 +1,6 @@
-package com.haitian.demo.util;
+package com.haitian.demo.util.wechat;
 
-import com.haitian.demo.model.MessageImage;
+import com.haitian.demo.model.message.MessageImage;
 import com.thoughtworks.xstream.XStream;
 
 import java.util.Date;

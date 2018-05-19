@@ -3,7 +3,7 @@ package com.haitian.demo.service;
 import com.haitian.demo.model.netbean.GetTokenRequest;
 import com.haitian.demo.model.netbean.GetTokenResponse;
 import com.haitian.demo.net.RetrofitManager;
-import com.haitian.demo.util.URLContract;
+import com.haitian.demo.util.wechat.WeChatUtil;
 
 import org.springframework.stereotype.Service;
 
@@ -40,7 +40,7 @@ public class ApiNetWX {
 
     public interface GetAccessTokenService{
 
-        @GET(URLContract.GET_ACCESS_TOKEN)
+        @GET(WeChatUtil.GET_ACCESS_TOKEN)
         Call<GetTokenResponse> getToken(@Query("grant_type") String grant_type, @Query("appid")
                 String appid, @Query("secret") String secret);
     }

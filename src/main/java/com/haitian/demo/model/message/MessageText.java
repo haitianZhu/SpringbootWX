@@ -1,4 +1,4 @@
-package com.haitian.demo.model;
+package com.haitian.demo.model.message;
 
 /**
  * @Author: haitian
