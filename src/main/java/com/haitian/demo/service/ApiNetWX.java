@@ -3,7 +3,9 @@ package com.haitian.demo.service;
 import com.haitian.demo.model.message.MessageType;
 import com.haitian.demo.model.netbean.GetTokenRequest;
 import com.haitian.demo.model.netbean.GetTokenResponse;
+import com.haitian.demo.model.netbean.MenuCreateResponse;
 import com.haitian.demo.model.netbean.UploadFileResponse;
+import com.haitian.demo.model.wechat.Menu;
 import com.haitian.demo.net.RetrofitManager;
 import com.haitian.demo.util.wechat.WeChatUtil;
 
@@ -16,6 +18,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -80,6 +83,23 @@ public class ApiNetWX {
 
     }
 
+    public static MenuCreateResponse createMenu(String baseURL, String token, Menu menu) {
+
+        MenuCreateService menuCreateService = RetrofitManager.getRetrofit(baseURL).create
+                (MenuCreateService.class);
+
+        Call<MenuCreateResponse> call = menuCreateService.createMenu(token, menu);
+
+        MenuCreateResponse menuCreateResponse = null;
+        try {
+            menuCreateResponse = call.execute().body();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return menuCreateResponse;
+    }
+
     public interface GetAccessTokenService {
 
         @GET(WeChatUtil.GET_ACCESS_TOKEN)
@@ -94,6 +114,12 @@ public class ApiNetWX {
         Call<UploadFileResponse> uploadFile(@Query("ACCESS_TOKEN") String token, @Query("TYPE")
                 String type, @Part("description") RequestBody description, @Part MultipartBody
                 .Part file);
+    }
+
+    public interface MenuCreateService {
+
+        @POST(WeChatUtil.MENU_CREATE)
+        Call<MenuCreateResponse> createMenu(@Query("ACCESS_TOKEN") String token, @Body Menu menu);
     }
 
 }

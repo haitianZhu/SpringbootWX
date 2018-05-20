@@ -11,4 +11,7 @@ public class MessageType {
     public static final String VOICE = "voice";
     public static final String TEXT = "text";
 
+    public static final String LOCATION = "location";
+    public static final String EVENT = "event";
+
 }

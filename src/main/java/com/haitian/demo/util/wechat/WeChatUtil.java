@@ -1,9 +1,11 @@
 package com.haitian.demo.util.wechat;
 
-import com.haitian.demo.controller.CoreController;
+import com.google.gson.Gson;
 import com.haitian.demo.model.netbean.GetTokenRequest;
 import com.haitian.demo.model.netbean.GetTokenResponse;
+import com.haitian.demo.model.netbean.MenuCreateResponse;
 import com.haitian.demo.model.netbean.UploadFileResponse;
+import com.haitian.demo.model.wechat.Menu;
 import com.haitian.demo.service.ApiNetWX;
 import com.haitian.demo.util.RedisUtil;
 
@@ -33,6 +35,8 @@ public class WeChatUtil {
     public static final String GET_ACCESS_TOKEN = "token";
 
     public static final String UPLOAD_MEDIA = "media/upload";
+
+    public static final String MENU_CREATE = "menu/create";
 
     /**
      * constant value
@@ -99,6 +103,18 @@ public class WeChatUtil {
             UploadFileResponse uploadFileResponse = ApiNetWX.uploadFile(WeChatUtil.BASE_URL,
                     file, mediaType, token);
             log.info(uploadFileResponse.toString());
+        }
+
+    }
+
+    public static void createMenu(Menu menu) {
+
+        String token = getToken();
+        if (token != null && !token.isEmpty()) {
+
+            MenuCreateResponse menuCreateResponse = ApiNetWX.createMenu(WeChatUtil.BASE_URL,
+                    token, menu);
+            log.info(menuCreateResponse.toString());
         }
 
     }

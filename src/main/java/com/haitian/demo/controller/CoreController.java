@@ -1,9 +1,11 @@
 package com.haitian.demo.controller;
 
+import com.google.gson.Gson;
 import com.haitian.demo.model.message.MessageType;
-import com.haitian.demo.model.netbean.GetTokenRequest;
-import com.haitian.demo.model.netbean.GetTokenResponse;
-import com.haitian.demo.service.ApiNetWX;
+import com.haitian.demo.model.wechat.Button;
+import com.haitian.demo.model.wechat.ClickButton;
+import com.haitian.demo.model.wechat.Menu;
+import com.haitian.demo.model.wechat.ViewButton;
 import com.haitian.demo.service.CoreService;
 import com.haitian.demo.util.wechat.ImageMessageUtil;
 import com.haitian.demo.util.wechat.MessageUtil;
@@ -21,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -89,6 +90,11 @@ public class CoreController {
 //            File imageFile = new File("1.jpg");
 //            WeChatUtil.uploadFile(imageFile, MessageType.IMAGE);
 
+            if (content.equals("111")) {
+                Menu menu = initTestMenu();
+                WeChatUtil.createMenu(menu);
+            }
+
             TextMessageUtil textMessage = new TextMessageUtil();
             String responseContent = "你输入的内容是:" + WeChatUtil.getToken();
             message = textMessage.initMessage(fromUserName, toUserName, responseContent);
@@ -105,6 +111,16 @@ public class CoreController {
 
             VoiceMessageUtil voiceMessageUtil = new VoiceMessageUtil();
             message = voiceMessageUtil.initMessage(fromUserName, toUserName, mediaId);
+        } else if (MessageType.EVENT.equals(msgType)) {
+
+            TextMessageUtil textMessage = new TextMessageUtil();
+            String responseContent = "你输入的内容是:" + msgType;
+            message = textMessage.initMessage(fromUserName, toUserName, responseContent);
+        } else if (MessageType.LOCATION.equals(msgType)) {
+
+            TextMessageUtil textMessage = new TextMessageUtil();
+            String responseContent = "你输入的内容是:" + msgType;
+            message = textMessage.initMessage(fromUserName, toUserName, responseContent);
         }
 
 
@@ -116,5 +132,46 @@ public class CoreController {
             e.printStackTrace();
         }
         out.close();
+    }
+
+    private Menu initTestMenu() {
+
+        String result = "";
+        //创建点击一级菜单
+        ClickButton button1 = new ClickButton();
+        button1.setName("朴树");
+        button1.setKey("1");
+        button1.setType("click");
+
+        //创建跳转型一级菜单
+        ViewButton button2 = new ViewButton();
+        button2.setName("百度一下");
+        button2.setType("view");
+        button2.setUrl("https://www.baidu.com");
+
+        //创建其他类型的菜单与click型用法一致
+        ClickButton button3_1 = new ClickButton();
+        button3_1.setName("拍照发图");
+        button3_1.setType("pic_photo_or_album");
+        button3_1.setKey("3_1");
+
+        ClickButton button3_2 = new ClickButton();
+        button3_2.setName("发送位置");
+        button3_2.setKey("3_2");
+        button3_2.setType("location_select");
+
+        //封装到一级菜单
+        Button button3 = new Button();
+        button3.setName("菜单");
+        button3.setType("click");
+        button3.setSub_button(new Button[]{button3_1, button3_2});
+
+        //封装菜单
+        Menu menu = new Menu();
+        menu.setButton(new Button[]{button1, button2, button3});
+
+        log.info(new Gson().toJson(menu));
+
+        return menu;
     }
 }
